@@ -2,7 +2,7 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or Deep Agents application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/d12-914d46a5/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
+For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or Deep Agents application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/d12-2dadd6e5/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
 
 ## Design Intent
 
@@ -10,7 +10,7 @@ Preserve the agent's existing framework behavior and minimize migration-specific
 
 Treat migration as additive. Do not delete or replace user-authored code, and do not remove existing dependencies. Add only the hosting configuration, files, and dependencies required to run the existing agent on Foundry.
 
-Preserve the application's state semantics, including capabilities supplied by its original runtime. Follow the walkthrough's persistence guidance when the target needs an explicit state owner; preserve an established backend and avoid adding state requirements the application did not have.
+Do not add, remove, or replace the agent's checkpointer unless the user explicitly requests a checkpointing change. Checkpointing belongs to the agent's application logic, not its hosting configuration.
 
 ## Hosting Decision
 
