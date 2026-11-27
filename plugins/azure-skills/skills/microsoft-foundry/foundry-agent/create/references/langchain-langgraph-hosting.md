@@ -14,9 +14,11 @@ Credential delivery is separate from application authentication. If a hosted env
 
 Before editing, record the source and target public operations, input/configuration/result mappings, and any required state's owner and lifetime, including capabilities supplied by the original runtime. Name actual target entry points and state owners, not only protocol or session labels. Preserve established backends and caller responsibilities; do not introduce state requirements the application did not have.
 
-Inspect the original startup and follow-up workflow for state supplied implicitly by the runtime. Preserve any required state and its lifetime using a supported hosting mechanism; do not introduce persistence for stateless applications.
+Inspect the original startup command, documented follow-up workflow, and framework-managed tools before deciding the application is stateless. In particular, `langgraph dev` can checkpoint graphs that do not declare a checkpointer, and tool backends can keep virtual files and task progress in graph state. If the workflow reads or revises those files across requests, the new host must checkpoint that state. When reusing a graph-backed tool backend on Foundry without an existing durable saver, pass `FoundryCheckpointSaver` to the deployed graph's construction and verify that the launch configuration selects that graph. Keep a separate development export if Studio owns its checkpointer.
 
 ### 2. Choose the least invasive compatible path
+
+Before choosing a hosting path or sample, read the walkthrough's [local-hosting chapter](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/langgraph-to-foundry/02-run-locally.md) and, when deployment is in scope, [deployment preparation](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/langgraph-to-foundry/03-prepare-deployment.md); read its [state-ownership guidance](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/langgraph-to-foundry/05-persistence-and-recovery.md) if the original runtime supplies required state. If guidance cannot be read, report the limitation rather than substitute a sample.
 
 | Need | Hosting path |
 |------|--------------|
@@ -27,9 +29,15 @@ Choose the protocol from the required target caller and operations, not from the
 
 ### 3. Check the delivered project against that contract
 
-Validate the actual service definition, startup entry point, and uploaded runtime dependencies. A local startup does not establish that the submitted project is deployable. Report any checks you could not run.
+Before declaring the project deployable, check its actual entry points and uploaded runtime dependency inputs, including exclusions, against the recorded contract. A local environment or startup check alone does not establish a complete upload. Execute available checks and report blocked checks rather than claiming they passed.
 
-When the application needs persistent state, verify it survives for the caller workflow and lifetime required by the original contract.
+Verify which uploaded dependency declaration the selected remote builder actually consumes. Follow the deployment preparation guidance for that builder, including files it expects and development manifests that could select a different build path. Do not infer that a local lockfile, editable install or virtual environment works remotely; verify the upload has a complete runtime declaration and a startup command that works with the installed runtime, not a path to a development environment.
+
+Check the submitted agent service definition against the deployment preparation example linked above or a current generated definition for the chosen deployment mode. Verify the service kind, protocol entries and deployment configuration; parsing `azure.yaml` or starting the application alone does not validate the agent definition. When available, run `azd ai agent doctor --local-only` from the submitted project and inspect the per-service agent-definition result separately from environment setup. Fix definition failures and report skipped or unavailable checks without requiring cloud sign-in for this local check.
+
+When including a local `azd ai agent run` path, verify the submitted startup command and interpreter selection, not just an equivalent command in a separate environment. For a Python launcher, use the prepared local runtime and keep any uv Python pin aligned with the selected hosted runtime.
+
+For retained artifacts, verify a later request can read an artifact written by an earlier request without recreating it; use a different hosted session if the contract requires that lifetime. Startup, a successful first response, and an unchanged conversation ID are not evidence of state restoration. If external prerequisites block verification, keep the required state construction and report the blocked check.
 
 ## Sample Selection
 
@@ -41,7 +49,7 @@ Honor a named sample. For configuration-only migration, name the matching protoc
 | Invocations (configuration-only) | [`langgraph/invocations/03-run`](https://github.com/microsoft-foundry/foundry-samples/blob/main/samples/python/hosted-agents/langgraph/invocations/03-run/azure.yaml) |
 | ReAct chat with `create_agent` | `langgraph/responses/01-langgraph-chat` |
 | Toolbox; Toolbox with user OAuth | `langgraph/responses/02-langgraph-toolbox`; `langgraph/responses/03-langgraph-toolbox-user-identity` |
-| Multi-agent, subgraphs | `langgraph/responses/05-workflows`, `langgraph/responses/15-branching` |
+| Multi-agent, subgraphs, deep agents | `langgraph/responses/05-workflows`, `langgraph/responses/15-branching`, `langgraph/responses/11-deep-agents` |
 | Human-in-the-loop | `langgraph/responses/07-human-in-the-loop` |
 | Observability | `langgraph/responses/08-observability` |
 | Custom Responses server or startup/shutdown lifecycle | `langgraph/responses/12-custom-host` (`ResponsesHostServer`), only when `langgraph.json` cannot express it |

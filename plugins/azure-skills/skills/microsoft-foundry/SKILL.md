@@ -30,7 +30,9 @@ Strictly follow the script output for subsequent actions.
 
 ### Existing LangChain and LangGraph Applications
 
-For existing LangChain or LangGraph apps, follow [LangChain and LangGraph hosting](foundry-agent/create/references/langchain-langgraph-hosting.md) before choosing a sample. Start with the existing application contract; do local work first and require Azure authentication only for operations that need it.
+For an existing LangChain or LangGraph application, read [LangChain and LangGraph hosting](foundry-agent/create/references/langchain-langgraph-hosting.md) before entering the generic create/deploy workflow or selecting a sample. Resolve this reference from the skill root, and subsequent relative links from the document containing them, not from the application directory. Read the linked walkthrough chapters themselves before choosing the hosting boundary; a reference title or sample manifest does not replace that guidance.
+
+Start with the existing application's migration, not the generic create workflow. Inspect its contract, adapt the hosting entry point and deployment configuration, and run any local checks that do not require Azure access. Missing Azure login does not block this work. Follow the relevant cloud workflow and its authentication requirements before any operation that needs Azure access; report any verification or deployment that could not be run.
 
 ### Workflow Guidance
 
