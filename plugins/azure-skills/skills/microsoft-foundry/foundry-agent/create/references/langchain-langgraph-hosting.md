@@ -2,12 +2,12 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or Deep Agents application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
+**Required before re-hosting:** Open [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md) and read its interface mapping and runtime-owned state guidance before choosing a sample or entry point or editing code. If the source runtime supplies state required by later requests, also read [Persist graph state across turns](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/langgraph-to-foundry/05-persistence-and-recovery.md#persist-graph-state-across-turns) before choosing the hosted graph. Fetch the linked content, not just this summary. If a required section cannot be read, report the blocker rather than defaulting to configuration-only hosting.
 
 ## Re-hosting workflow
 
 1. Identify the existing caller contract. If a required operation depends on state from an earlier request, identify who owns that state and how long it must last, including state supplied implicitly by the original runtime. Preserve application behavior, framework, dependencies, model, tools, and credential inputs unless a change is required or requested. Do not add persistence to stateless applications.
-2. Use configuration-only hosting if the protocol's default mapping preserves the contract. Otherwise, adapt at the hosting boundary using a supported interface.
+2. Use configuration-only hosting only if the default mapping and the chosen graph export preserve the caller contract, including the owner and lifetime of required state. If the stock runner is compatible but the export relies on services supplied by the source runtime, adapt the hosted graph construction as described in the guide. Use a different hosting interface only when the default mapping cannot preserve the contract.
 3. Verify the delivered service definition, startup path, and runtime dependencies. Check required behavior through the delivered entry point, including that later requests can use any state the original workflow requires. Report any blocked checks.
 
 ## Sample Selection
@@ -29,9 +29,9 @@ Use a host server integration sample only when the hosting decision above requir
 
 Samples provide hosting patterns only. Use their manifests, adapters, protocol wiring, and deployment configuration as references; do not treat sample application structure or conventions as the desired final application.
 
-## Zero-code migration
+## Configuration-only hosting
 
-In the service's `project` directory, add or reuse `langgraph.json` and bind the existing graph or factory:
+Use this recipe only after confirming the conditions above. In the service's `project` directory, add or reuse `langgraph.json` and bind the compatible graph or factory:
 
 ```json
 {"dependencies": ["."], "graphs": {"agent": "./main.py:graph"}}
