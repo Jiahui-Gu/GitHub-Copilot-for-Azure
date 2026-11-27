@@ -2,12 +2,12 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-**Required before re-hosting:** Open [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md) and read its interface mapping and runtime-owned state guidance before choosing a sample or entry point or editing code. If the source runtime supplies state required by later requests, also read [Persist graph state across turns](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/langgraph-to-foundry/05-persistence-and-recovery.md#persist-graph-state-across-turns) before choosing the hosted graph. Fetch the linked content, not just this summary. If a required section cannot be read, report the blocker rather than defaulting to configuration-only hosting.
+**Required before re-hosting:** Read and follow [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/44ae0594fea20efd109623ae542aee1ecd4dcc8d/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md) before choosing a hosting path or editing code. If the guide is unavailable, report the blocker.
 
 ## Re-hosting workflow
 
 1. Identify the existing caller contract. If a required operation depends on state from an earlier request, identify who owns that state and how long it must last, including state supplied implicitly by the original runtime. Preserve application behavior, framework, dependencies, model, tools, and credential inputs unless a change is required or requested. Do not add persistence to stateless applications.
-2. Use configuration-only hosting only if the default mapping and the chosen graph export preserve the caller contract, including the owner and lifetime of required state. If the stock runner is compatible but the export relies on services supplied by the source runtime, adapt the hosted graph construction as described in the guide. Use a different hosting interface only when the default mapping cannot preserve the contract.
+2. Use configuration-only hosting only if the default mapping and chosen graph export preserve the caller contract, including required state. Otherwise, follow the guide for the necessary hosting adaptations.
 3. Verify the delivered service definition, startup path, and runtime dependencies. Check required behavior through the delivered entry point, including that later requests can use any state the original workflow requires. Report any blocked checks.
 
 ## Sample Selection
