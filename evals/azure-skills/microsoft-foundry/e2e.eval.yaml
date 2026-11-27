@@ -139,9 +139,6 @@ stimuli:
       area: migrate
     prompt: >-
       Re-host this entire application, including its existing public operations, as Microsoft Foundry hosted agents. Preserve business behavior and deliver a deployable project.
-    rubric:
-      - |
-        The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count.
     graders:
       - type: skill-invocation
         config:
@@ -153,3 +150,5 @@ stimuli:
           scoring: binary
           threshold: 1
           evidence: [trajectory, diff]
+          prompt: |
+            The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count.
