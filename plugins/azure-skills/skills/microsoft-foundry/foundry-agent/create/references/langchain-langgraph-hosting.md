@@ -2,7 +2,7 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-**Required before re-hosting:** Read and follow [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/44ae0594fea20efd109623ae542aee1ecd4dcc8d/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md) before choosing a hosting path or editing code. If the guide is unavailable, report the blocker.
+**Required before re-hosting:** Read and follow [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/f0332241f25c7f6da44ed7b96f4afe52d07b408b/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md) before choosing a hosting path or editing code. If the guide is unavailable, report the blocker.
 
 ## Re-hosting workflow
 
