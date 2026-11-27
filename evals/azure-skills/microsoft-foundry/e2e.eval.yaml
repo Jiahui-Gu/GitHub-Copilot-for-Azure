@@ -120,7 +120,7 @@ stimuli:
             Verify that the coding agent created a new Foundry project and model deployment, ran the migrated agent locally, deployed it successfully with direct code deploy,
             invoked the deployed agent with an order-status request, and received a successful tool-grounded response.
 
-  - name: "Migration - Deep Research to Foundry"
+  - name: "Migration - LangGraph to Foundry"
     agent_environment:
       git:
         type: clone
@@ -132,7 +132,7 @@ stimuli:
     constraints:
       max_turns: 50
     tags:
-      id: migration-deep-research-to-foundry
+      id: migration-langgraph-to-foundry
       type: foundry-e2e
       tier: full
       cost: llm
