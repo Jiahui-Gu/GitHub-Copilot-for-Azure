@@ -119,3 +119,39 @@ stimuli:
             Replacing or adapting only the HTTP server or protocol adapter for the Foundry runtime is acceptable and does not count as replacing the underlying SDK architecture.
             Verify that the coding agent created a new Foundry project and model deployment, ran the migrated agent locally, deployed it successfully with direct code deploy,
             invoked the deployed agent with an order-status request, and received a successful tool-grounded response.
+
+  - name: "Migration - Deep Research to Foundry"
+    agent_environment:
+      git:
+        type: clone
+        url: https://github.com/langchain-ai/deepagents.git
+        ref: a06932197ac66407bfdf079e27bab92d8d3a6a6c
+        shallow: true
+        sparse:
+          - examples/deep_research
+    constraints:
+      max_turns: 50
+    tags:
+      id: migration-deep-research-to-foundry
+      type: foundry-e2e
+      tier: full
+      cost: llm
+      area: migrate
+    prompt: |
+      Re-host the existing Python Deep Research application in `examples/deep_research` as a Microsoft Foundry hosted agent using the Responses protocol. Keep its existing Deep Agents graph, tools, and model, and put the Foundry hosting files in that application directory.
+
+      Prepare the source and hosting configuration locally. Do not provision or deploy Azure resources or call live model or search services. Do not wait for credentials or deployment settings.
+    rubric:
+      - |
+        The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count. Azure deployment and runtime acceptance are out of scope.
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - microsoft-foundry
+      - type: completed
+      - type: prompt
+        config:
+          scoring: binary
+          threshold: 1
+          evidence: [trajectory, diff]
