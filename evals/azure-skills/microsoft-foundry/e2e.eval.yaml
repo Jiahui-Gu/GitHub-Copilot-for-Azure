@@ -122,13 +122,9 @@ stimuli:
 
   - name: "Migration - LangGraph to Foundry"
     agent_environment:
-      git:
-        type: clone
-        url: https://github.com/langchain-ai/deepagents.git
-        ref: a06932197ac66407bfdf079e27bab92d8d3a6a6c
-        shallow: true
-        sparse:
-          - examples/deep_research
+      files:
+        - src: fixture/deep-research
+          dest: .
     constraints:
       max_turns: 50
     tags:
