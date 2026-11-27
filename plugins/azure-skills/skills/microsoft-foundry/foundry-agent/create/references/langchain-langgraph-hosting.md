@@ -6,9 +6,9 @@ For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or De
 
 ## Re-hosting workflow
 
-1. Identify the existing caller contract and any required state and lifetime. Preserve application behavior, framework, dependencies, model, tools, and credential inputs unless a change is required or requested.
+1. Identify the existing caller contract. If a required operation depends on state from an earlier request, identify who owns that state and how long it must last, including state supplied implicitly by the original runtime. Preserve application behavior, framework, dependencies, model, tools, and credential inputs unless a change is required or requested. Do not add persistence to stateless applications.
 2. Use configuration-only hosting if the protocol's default mapping preserves the contract. Otherwise, adapt at the hosting boundary using a supported interface.
-3. Verify the delivered service definition, startup path, and runtime dependencies. Check required behavior, including state continuity when applicable, and report any blocked checks.
+3. Verify the delivered service definition, startup path, and runtime dependencies. Check required behavior through the delivered entry point, including that later requests can use any state the original workflow requires. Report any blocked checks.
 
 ## Sample Selection
 
