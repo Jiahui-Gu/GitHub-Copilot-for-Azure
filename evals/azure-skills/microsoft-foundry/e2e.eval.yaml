@@ -137,13 +137,11 @@ stimuli:
       tier: full
       cost: llm
       area: migrate
-    prompt: |
-      Re-host the existing Python Deep Research application in `examples/deep_research` as a Microsoft Foundry hosted agent using the Responses protocol. Keep its existing Deep Agents graph, tools, and model, and put the Foundry hosting files in that application directory.
-
-      Prepare the source and hosting configuration locally. Do not provision or deploy Azure resources or call live model or search services. Do not wait for credentials or deployment settings.
+    prompt: >-
+      Re-host this entire application, including its existing public operations, as Microsoft Foundry hosted agents. Preserve business behavior and deliver a deployable project.
     rubric:
       - |
-        The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count. Azure deployment and runtime acceptance are out of scope.
+        The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count.
     graders:
       - type: skill-invocation
         config:
