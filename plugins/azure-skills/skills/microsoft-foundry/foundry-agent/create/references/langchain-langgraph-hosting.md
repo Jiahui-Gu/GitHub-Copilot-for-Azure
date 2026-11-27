@@ -2,22 +2,34 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-## Design Intent
+For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or Deep Agents application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
 
-Preserve the agent's existing framework behavior and minimize migration-specific code. Choose the least invasive hosting path that satisfies the requested behavior.
+## Re-hosting Workflow
 
-Treat migration as additive. Do not delete or replace user-authored code, and do not remove existing dependencies. Add only the hosting configuration, files, and dependencies required to run the existing agent on Foundry.
+Preserve business behavior, the existing framework and dependencies. Keep the existing model provider, tools and credential inputs unless the user requests changes or the hosting contract requires an adaptation. Limit edits to necessary hosting-boundary, graph-construction and lifecycle adaptations.
 
-Do not add, remove, or replace the agent's checkpointer unless the user explicitly requests a checkpointing change. Checkpointing belongs to the agent's application logic, not its hosting configuration.
+Credential delivery is separate from application authentication. If a hosted environment can supply the existing credential variables securely, keep those inputs and avoid adding application-managed project connections solely to re-host. Document any required secret bindings without embedding secret values.
 
-## Hosting Decision
+### 1. Record the source-to-target contract
+
+Before editing, record the source and target public operations, input/configuration/result mappings, and any required state's owner and lifetime, including capabilities supplied by the original runtime. Name actual target entry points and state owners, not only protocol or session labels. Preserve established backends and caller responsibilities; do not introduce state requirements the application did not have.
+
+Inspect the original startup and follow-up workflow for state supplied implicitly by the runtime. Preserve any required state and its lifetime using a supported hosting mechanism; do not introduce persistence for stateless applications.
+
+### 2. Choose the least invasive compatible path
 
 | Need | Hosting path |
 |------|--------------|
-| Standard LangChain or LangGraph agent hosting with no custom server behavior | **Configuration-only** |
-| Custom request handling, protocol behavior, lifecycle control, or other hosting behavior that configuration cannot express | **Host server integration** |
+| The selected protocol's default mapping preserves the application's required interface, and any required state remains with the correct owner | **Configuration-only** |
+| Required input, configuration, operations or runtime capabilities are not covered by that mapping | **Host server integration** or another verified supported entry point |
 
-Prefer configuration-only hosting unless the user explicitly requests custom hosting behavior or the existing agent demonstrably requires it. Do not add host server integration merely because the project already contains agent code.
+Choose the protocol from the required target caller and operations, not from the source framework's server APIs alone. When no target protocol is specified and Responses can preserve the required caller workflow, prefer Responses and reuse the existing graph and tools. Keep required state and artifact access in the mapping; do not recreate every development-server endpoint or add a custom RPC surface merely because the source server exposes one. If a required client operation or compatibility contract cannot be preserved this way, explain the gap and choose a supported boundary that meets it.
+
+### 3. Check the delivered project against that contract
+
+Validate the actual service definition, startup entry point, and uploaded runtime dependencies. A local startup does not establish that the submitted project is deployable. Report any checks you could not run.
+
+When the application needs persistent state, verify it survives for the caller workflow and lifetime required by the original contract.
 
 ## Sample Selection
 
