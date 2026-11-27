@@ -2,7 +2,7 @@
 
 Use this guidance when creating, migrating, or re-hosting a LangChain or LangGraph agent on Foundry.
 
-For an end-to-end walkthrough of hosting an existing LangGraph, LangChain, or Deep Agents application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
+For an end-to-end walkthrough of hosting an existing LangGraph or LangChain application on Foundry, see [Host LangGraph applications on Microsoft Foundry](https://raw.githubusercontent.com/Jiahui-Gu/langchain-azure/dd6d89aeda772ab25671312c0bc0fbd55a5a4ddd/libs/azure-ai/docs/hosting/host-langgraph-on-foundry.md).
 
 ## Re-hosting Workflow
 
@@ -41,7 +41,7 @@ Honor a named sample. For configuration-only migration, name the matching protoc
 | Invocations (configuration-only) | [`langgraph/invocations/03-run`](https://github.com/microsoft-foundry/foundry-samples/blob/main/samples/python/hosted-agents/langgraph/invocations/03-run/azure.yaml) |
 | ReAct chat with `create_agent` | `langgraph/responses/01-langgraph-chat` |
 | Toolbox; Toolbox with user OAuth | `langgraph/responses/02-langgraph-toolbox`; `langgraph/responses/03-langgraph-toolbox-user-identity` |
-| Multi-agent, subgraphs, deep agents | `langgraph/responses/05-workflows`, `langgraph/responses/15-branching`, `langgraph/responses/11-deep-agents` |
+| Multi-agent, subgraphs | `langgraph/responses/05-workflows`, `langgraph/responses/15-branching` |
 | Human-in-the-loop | `langgraph/responses/07-human-in-the-loop` |
 | Observability | `langgraph/responses/08-observability` |
 | Custom Responses server or startup/shutdown lifecycle | `langgraph/responses/12-custom-host` (`ResponsesHostServer`), only when `langgraph.json` cannot express it |
