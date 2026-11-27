@@ -119,3 +119,32 @@ stimuli:
             Replacing or adapting only the HTTP server or protocol adapter for the Foundry runtime is acceptable and does not count as replacing the underlying SDK architecture.
             Verify that the coding agent created a new Foundry project and model deployment, ran the migrated agent locally, deployed it successfully with direct code deploy,
             invoked the deployed agent with an order-status request, and received a successful tool-grounded response.
+
+  - name: "Migration - LangGraph to Foundry"
+    agent_environment:
+      files:
+        - src: fixture/deep-research
+          dest: .
+    constraints:
+      max_turns: 50
+    tags:
+      id: migration-langgraph-to-foundry
+      type: foundry-e2e
+      tier: full
+      cost: llm
+      area: migrate
+    prompt: >-
+      Re-host this entire application, including its existing public operations, as Microsoft Foundry hosted agents. Preserve business behavior and deliver a deployable project.
+    graders:
+      - type: skill-invocation
+        config:
+          required:
+            - microsoft-foundry
+      - type: completed
+      - type: prompt
+        config:
+          scoring: binary
+          threshold: 1
+          evidence: [trajectory, diff]
+          prompt: |
+            The workspace changes add an `azure.yaml` hosted-agent service that connects the Foundry Responses runtime to the existing Deep Research graph. The original model and research tools are retained. A plan or prose alone does not count.
